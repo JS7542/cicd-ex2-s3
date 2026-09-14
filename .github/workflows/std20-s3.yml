@@ -22,4 +22,4 @@ jobs:
 
       - name: S3 정적 웹사이트로 배포
         run: |
-          aws s3 sync html/ s3://${{ secrets.S3_BUCKET_NAME }} --delete --acl public-read
+          aws s3 sync html/ s3://${{ secrets.S3_BUCKET_NAME }} --delete
