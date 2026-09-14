@@ -1,0 +1,25 @@
+name: GitOps S3 CICD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+# 2. 작업 정의
+jobs:
+  build-and-update:
+    runs-on: ubuntu-latest    # 실제 작업 주체
+    steps:
+      - name: 소스 코드 전송
+        uses: actions/checkout@v4
+
+      - name: AWS 자격 증명 설정
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: S3 정적 웹사이트로 배포
+        run: |
+          aws s3 sync html/ s3://${{ secrets.S3_BUCKET_NAME }} --delete --acl public-read
